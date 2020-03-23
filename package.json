@@ -5,15 +5,20 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "eslint": "eslint --ext=.js ./ --ignore-path .gitignore"
   },
   "author": "Alexey Kuturkin",
   "license": "ISC",
   "dependencies": {
-    "eslint": "^6.8.0",
-    "express": "^4.17.1"
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.2",
+    "validator": "^12.2.0"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.20.1",
     "nodemon": "^2.0.2"

@@ -1,23 +1,18 @@
-const path = require("path");
 const router = require("express").Router();
-const fsp = require("fs").promises;
+const {
+  getCards,
+  createCard,
+  deleteCard,
+  likeToggle
+} = require("../controllers/cards");
+const { doesCardExist } = require("../middlewares/doesCardExist");
+const {
+  noRigtsUsersDeleteCard
+} = require("../middlewares/noRightsUsersDeleteCard");
 
-async function getCards() {
-  const pathToFile = path.join(__dirname, "../data/cards.json");
-
-  return fsp
-    .readFile(pathToFile, "utf8")
-    .then(data => [JSON.parse(data), null])
-    .catch(err => [null, err]);
-}
-
-router.get("/", async (req, res) => {
-  const [cards, error] = await getCards();
-
-  if (error) {
-    return res.status(500).json({ message: "Ошибка" });
-  }
-  return res.json(cards);
-});
-
+router.get("/", getCards);
+router.post("/", createCard);
+router.delete("/:cardId", doesCardExist, noRigtsUsersDeleteCard, deleteCard);
+router.put("/:cardId/likes", doesCardExist, likeToggle);
+router.delete("/:cardId/likes", doesCardExist, likeToggle);
 module.exports = router;
