@@ -1,9 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const path = require("path");
 const bodyParser = require("body-parser");
 const cards = require("./routes/cards");
 const users = require("./routes/users");
+
+const { resourceIsNotFound } = require("./controllers/resourceIsNotFound");
 
 const { PORT = 3000 } = process.env;
 
@@ -14,7 +15,7 @@ mongoose
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   })
   .then(() => {
     console.log("Подключение к Mongo прошло успешно");
@@ -25,7 +26,7 @@ mongoose
 
 app.use((req, res, next) => {
   req.user = {
-    _id: "5e771d0e630ea6178cfd1af2"
+    _id: "5e771d0e630ea6178cfd1af2",
   };
   next();
 });
