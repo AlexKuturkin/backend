@@ -1,37 +1,23 @@
 const mongoose = require("mongoose");
-const validator = require("validator");
-const { optionValidate } = require("../libs/option-validate");
 
 const userSchema = new mongoose.Schema(
   {
-
     name: {
       type: String,
-      required: optionValidate.requiredField,
-      minlength: optionValidate.minLenght,
-      maxlength: optionValidate.maxLenght,
+      required: true,
+      minlength: 2,
+      maxlength: 30,
     },
-
     about: {
       type: String,
-      required: optionValidate.requiredField,
-      minlength: optionValidate.minLenght,
-      maxlength: optionValidate.maxLenght,
+      required: true,
+      minlength: 2,
+      maxlength: 30,
     },
-
     avatar: {
       type: String,
-      required: optionValidate.requiredField,
-      validate: {
-        validator(valid) {
-          return validator.isURL(valid);
-        },
-        message: (props) => `${props.value} ${optionValidate.urlMessage}`,
-      },
+      required: true,
     },
-  },
-  {
-    versionKey: false,
   },
 );
 

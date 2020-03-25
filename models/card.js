@@ -1,44 +1,39 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const { optionValidate } = require("../libs/option-validate");
 
 const cardSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: optionValidate.requiredField,
-      minlength: optionValidate.minLenght,
-      maxlength: optionValidate.maxLenght
+      required: true,
+      minlength: 2,
+      maxlength: 30,
     },
     link: {
       type: String,
-      required: optionValidate.requiredField,
+      required: true,
       validate: {
         validator(valid) {
           return validator.isURL(valid);
         },
-        message: props => `${props.value} ${optionValidate.urlMessage}`
-      }
+        message: "Неверный формат ссылки",
+      },
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
-      required: optionValidate.requiredField
+      required: true,
     },
-    likes: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "user"
-      }
-    ],
+    likes: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      default: [],
+    }],
     createdAt: {
       type: Date,
-      default: Date.now
-    }
+      default: Date.now,
+    },
   },
-  {
-    versionKey: false
-  }
 );
 
 module.exports = mongoose.model("card", cardSchema);

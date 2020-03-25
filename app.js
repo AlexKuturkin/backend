@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const cards = require("./routes/cards");
 const users = require("./routes/users");
 
-const { resourceIsNotFound } = require("./controllers/resourceIsNotFound");
 
 const { PORT = 3000 } = process.env;
 
@@ -15,7 +14,6 @@ mongoose
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
-    useUnifiedTopology: true,
   })
   .then(() => {
     console.log("Подключение к Mongo прошло успешно");
@@ -26,16 +24,17 @@ mongoose
 
 app.use((req, res, next) => {
   req.user = {
-    _id: "5e771d0e630ea6178cfd1af2",
+    _id: "5e7afd59ce80c634d4af21dd",
   };
   next();
 });
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use("/cards", cards);
 app.use("/users", users);
-app.use("/", resourceIsNotFound);
+app.use("/", (req, res) => {
+  res.status(404).send({ message: "Запрашиваемый ресурс не найден" });
+});
 
 app.listen(PORT, () => {
   console.log("Server is listening on port:", PORT);
