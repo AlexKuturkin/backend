@@ -25,8 +25,9 @@ module.exports.removeCard = (req, res) => {
     .then((card) => {
       if (card) {
         res.send({ data: card });
+      } else {
+        res.send({ message: "Карточки с данным ID не существует, либо она была уже удалена" });
       }
-      res.send({ message: "Карточки с данным ID не существует, либо она была уже удалена" });
     })
     .catch((err) => {
       res.status(500).send({ message: "Ошибка при удалении карточки", error: err });

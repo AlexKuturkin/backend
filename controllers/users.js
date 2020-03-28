@@ -15,8 +15,9 @@ module.exports.getUserById = (req, res) => {
     .then((user) => {
       if (user) {
         res.send({ data: user });
+      } else {
+        res.send({ message: "Пользователя с данным ID не существует" });
       }
-      res.send({ message: "Пользователя с данным ID не существует" });
     })
     .catch((error) => res
       .status(500)
