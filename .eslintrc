@@ -1,0 +1,18 @@
+{
+  "extends": "airbnb-base",
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "rules": {
+    "no-underscore-dangle": ["error", { "allow": ["id_", "_id"] }],
+    "max-len": ["error", { "code": 150, "ignoreComments": false }],
+    "no-console": 0,
+    "curly": "warn",
+    "quotes": ["warn", "double"],
+    "no-shadow": [
+      0,
+      { "builtinGlobals": false, "hoist": "functions", "allow": [] }
+    ]
+  },
+  "parser": "babel-eslint"
+}
