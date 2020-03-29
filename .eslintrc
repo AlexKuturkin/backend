@@ -4,14 +4,38 @@
     "ecmaVersion": 6
   },
   "rules": {
-    "no-underscore-dangle": ["error", { "allow": ["id_", "_id"] }],
-    "max-len": ["error", { "code": 150, "ignoreComments": false }],
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allow": [
+          "id_",
+          "_id"
+        ]
+      }
+    ],
+    "consistent-return": "off",
+    "func-names": 0,
+    "no-else-return": "off",
+    "max-len": [
+      "error",
+      {
+        "code": 150,
+        "ignoreComments": false
+      }
+    ],
     "no-console": 0,
     "curly": "warn",
-    "quotes": ["warn", "double"],
+    "quotes": [
+      "warn",
+      "double"
+    ],
     "no-shadow": [
       0,
-      { "builtinGlobals": false, "hoist": "functions", "allow": [] }
+      {
+        "builtinGlobals": false,
+        "hoist": "functions",
+        "allow": []
+      }
     ]
   },
   "parser": "babel-eslint"

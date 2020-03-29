@@ -21,15 +21,20 @@ module.exports.createCard = (req, res) => {
 
 module.exports.removeCard = (req, res) => {
   card
-    .findByIdAndRemove(req.params.cardId)
-    .then((card) => {
-      if (card) {
-        res.send({ data: card });
+    .findOne({ _id: req.params.cardId })
+    .then((cardInfo) => {
+      if (cardInfo.owner.toString() === req.user._id.toString()) {
+        return card.findByIdAndRemove(req.params.cardId)
+          .then(() => res.send({ message: "Карточка удалена", data: cardInfo }));
       } else {
-        res.send({ message: "Карточки с данным ID не существует, либо она была уже удалена" });
+        res.send({ message: "Нет прав для удаления" });
       }
     })
     .catch((err) => {
-      res.status(500).send({ message: "Ошибка при удалении карточки", error: err });
+      if (err.name === "CastError") {
+        res.status(400).send({ message: "Ошибка при удалении карточки", error: err });
+      } else {
+        res.status(500).send({ message: "Ошибка при удалении карточки", error: err });
+      }
     });
 };

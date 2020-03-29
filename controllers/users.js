@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const user = require("../models/user");
 
 module.exports.getUsers = (req, res) => {
@@ -25,11 +27,45 @@ module.exports.getUserById = (req, res) => {
 };
 
 module.exports.createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
-  user
-    .create({ name, about, avatar })
-    .then((newUser) => res.send({ data: newUser }))
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
+  bcrypt.hash(password, 10)
+    .then((hash) => user.create({
+      name,
+      about,
+      avatar,
+      email,
+      password: hash,
+    }))
+    .then((newUser) => res.send({
+      name: newUser.name, about: newUser.about, avatar: newUser.avatar, email: newUser.email,
+    }))
     .catch((error) => res
       .status(500)
       .send({ message: "Ошибка при создании пользователя", err: error }));
+};
+
+module.exports.login = (req, res) => {
+  const { email, password } = req.body;
+  return user.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign(
+        { _id: user._id },
+        "yandexthebest",
+        { expiresIn: "7d" },
+      );
+      res
+        .cookie("jwt", token, {
+          maxAge: 3600000 * 24 * 7,
+          httpOnly: true,
+          sameSite: true,
+        })
+        .send({ token });
+    })
+    .catch((err) => {
+      res
+        .status(401)
+        .send({ message: `Ошибка аутентификации. ${err.message}` });
+    });
 };
