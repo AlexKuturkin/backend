@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const user = require("../models/user");
+const JWT_SECRET = require("../config");
 
 module.exports.getUsers = (req, res) => {
   user
@@ -52,7 +53,7 @@ module.exports.login = (req, res) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        "yandexthebest",
+        JWT_SECRET,
         { expiresIn: "7d" },
       );
       res
