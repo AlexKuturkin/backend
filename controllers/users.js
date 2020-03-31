@@ -31,20 +31,24 @@ module.exports.createUser = (req, res) => {
   const {
     name, about, avatar, email, password,
   } = req.body;
-  bcrypt.hash(password, 10)
-    .then((hash) => user.create({
-      name,
-      about,
-      avatar,
-      email,
-      password: hash,
-    }))
-    .then((newUser) => res.send({
-      name: newUser.name, about: newUser.about, avatar: newUser.avatar, email: newUser.email,
-    }))
-    .catch((error) => res
-      .status(500)
-      .send({ message: "Ошибка при создании пользователя", err: error }));
+  if (password.length > 9) {
+    bcrypt.hash(password, 10)
+      .then((hash) => user.create({
+        name,
+        about,
+        avatar,
+        email,
+        password: hash,
+      }))
+      .then((newUser) => res.send({
+        name: newUser.name, about: newUser.about, avatar: newUser.avatar, email: newUser.email,
+      }))
+      .catch((error) => res
+        .status(500)
+        .send({ message: "Ошибка при создании пользователя", err: error }));
+  } else {
+    res.status(400).send({ message: "Ошибка при создании пользователя. Длина пароля должна быть от 10 символов" });
+  }
 };
 
 module.exports.login = (req, res) => {
@@ -53,7 +57,7 @@ module.exports.login = (req, res) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        JWT_SECRET,
+        JWT_SECRET.JWT_SECRET,
         { expiresIn: "7d" },
       );
       res

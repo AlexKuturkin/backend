@@ -34,10 +34,6 @@ const userSchema = new mongoose.Schema(
       required: true,
       select: false,
       minlength: 10,
-      validate: {
-        validator: () => Promise.resolve(false),
-        message: "Пароль не прошёл валидацию",
-      },
     },
   },
 );
