@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const isEmail = require("validator/lib/isEmail");
 const bcrypt = require("bcryptjs");
+const YouNeedToLogin = require("../errors/loginError");
 
 const userSchema = new mongoose.Schema(
   {
@@ -42,13 +43,13 @@ userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select("+password")
     .then((user) => {
       if (!user) {
-        return Promise.reject(new Error("Почта или пароль не прошли проверку"));
+        return Promise.reject(new YouNeedToLogin("Почта или пароль не прошли проверку"));
       }
 
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            return Promise.reject(new Error("Почта или пароль не прошли проверку"));
+            return Promise.reject(new YouNeedToLogin("Почта или пароль не прошли проверку"));
           }
           return user;
         });
