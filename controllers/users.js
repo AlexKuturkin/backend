@@ -9,9 +9,6 @@ module.exports.getUsers = (req, res, next) => {
     .find({})
     .then((users) => res.send({ data: users }))
     .catch(next);
-  /* .catch((error) => res
-    .status(500)
-    .send({ message: "Ошибка при выводе всех пользователей", err: error })); */
 };
 
 module.exports.getUserById = (req, res, next) => {
@@ -21,14 +18,10 @@ module.exports.getUserById = (req, res, next) => {
       if (user) {
         res.send({ data: user });
       } else {
-        // res.send({ message: "Пользователя с данным ID не существует" });
         throw new NotFoundError("Пользователя с данным ID не существует");
       }
     })
     .catch(next);
-  /* .catch((error) => res
-    .status(500)
-    .send({ message: "Ошибка при выводе одного пользователя", err: error })); */
 };
 
 module.exports.createUser = (req, res, next) => {
@@ -48,12 +41,6 @@ module.exports.createUser = (req, res, next) => {
         name: newUser.name, about: newUser.about, avatar: newUser.avatar, email: newUser.email,
       }))
       .catch(next);
-    /* .catch((error) => res
-      .status(500)
-      .send({ message: "Ошибка при создании пользователя", err: error }));
-} else {
-  res.status(400).send({ message: "Ошибка при создании пользователя. Длина пароля должна быть от 10 символов" });
-} */
   }
 };
 
@@ -75,9 +62,4 @@ module.exports.login = (req, res, next) => {
         .send({ token });
     })
     .catch(next);
-  /* .catch((err) => {
-      res
-        .status(401)
-        .send({ message: `Ошибка аутентификации. ${err.message}` });
-    }); */
 };

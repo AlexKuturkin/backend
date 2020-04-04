@@ -1,15 +1,15 @@
 ## **Команды**
-**npm run** => запускает сервер на localhost:3000
-**npm dev** => запускает сервер на localhost:3000 с хот релоудом
+**npm run start** => запускает сервер на localhost:3000
+**npm run dev** => запускает сервер на localhost:3000 с хот релоудом
 
 
 ## **Адреса**
 Фронтенд
-https://mestoback.tk/ или (htpp)
+https://mestoback.tk/ или (http)
 
 
 Бэкенд
-https://api.mestoback.tk/ или (htpp)
+https://api.mestoback.tk/ или (http)
 
 
 ## **Публичный IP**
