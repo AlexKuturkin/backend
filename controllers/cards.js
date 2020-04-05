@@ -1,5 +1,6 @@
 const card = require("../models/card");
 const NotRightsError = require("../errors/notRightsError");
+const NotFoundError = require("../errors/notFoundError");
 
 module.exports.getCards = (req, res, next) => {
   card
@@ -27,6 +28,8 @@ module.exports.removeCard = (req, res, next) => {
         } else {
           throw new NotRightsError("Нет прав для удаления");
         }
+      } else {
+        throw new NotFoundError("Карточка не была найдена");
       }
     })
     .catch(next);
