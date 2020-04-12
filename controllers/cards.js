@@ -1,14 +1,12 @@
 const card = require("../models/card");
 const NotRightsError = require("../errors/notRightsError");
+const NotFoundError = require("../errors/notFoundError");
 
 module.exports.getCards = (req, res, next) => {
   card
     .find({})
     .then((cards) => res.send({ data: cards }))
     .catch(next);
-  /* .catch((error) => res
-    .status(500)
-    .send({ message: "Ошибка при выводе всех карточек", err: error })); */
 };
 
 module.exports.createCard = (req, res, next) => {
@@ -17,29 +15,22 @@ module.exports.createCard = (req, res, next) => {
     .create({ name, link, owner: req.user._id })
     .then((newCard) => res.send({ data: newCard }))
     .catch(next);
-  /* .catch((error) => res
-    .status(500)
-    .send({ message: "Ошибка при создании карточки", err: error })); */
 };
 
 module.exports.removeCard = (req, res, next) => {
   card
     .findOne({ _id: req.params.cardId })
     .then((cardInfo) => {
-      if (cardInfo.owner.toString() === req.user._id.toString()) {
-        return card.findByIdAndRemove(req.params.cardId)
-          .then(() => res.send({ message: "Карточка удалена", data: cardInfo }));
+      if (cardInfo !== null) {
+        if (cardInfo.owner.toString() === req.user._id.toString()) {
+          return card.findByIdAndRemove(req.params.cardId)
+            .then(() => res.send({ message: "Карточка удалена", data: cardInfo }));
+        } else {
+          throw new NotRightsError("Нет прав для удаления");
+        }
       } else {
-        // res.send({ message: "Нет прав для удаления" });
-        throw new NotRightsError("Нет прав для удаления");
+        throw new NotFoundError("Карточка не была найдена");
       }
     })
     .catch(next);
-  /* .catch((err) => {
-    if (err.name === "CastError") {
-      res.status(400).send({ message: "Ошибка при удалении карточки", error: err });
-    } else {
-      res.status(500).send({ message: "Ошибка при удалении карточки", error: err });
-    }
-  }); */
 };

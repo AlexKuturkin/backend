@@ -57,7 +57,6 @@ app.use("/users", users);
 
 app.use("/", (req, res, next) => {
   next(new NotFoundError("Запрашиваемый ресурс не найден"));
-  // res.status(404).send({ message: "Запрашиваемый ресурс не найден" });
 });
 
 app.use(errorLogger);
